@@ -1,0 +1,628 @@
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="session" />
+<c:set var="versionNum" value="${activeProfile eq 'local' ? ran : '0.033'}" />
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta
+      id="viewport"
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
+  <c:if test="${corpCd eq 'medLM'}">
+  <title>Ark AI Assistant</title>
+  </c:if>
+  <c:if test="${corpCd ne 'medLM'}">
+  <title>TPCG CHATBOT BETA</title>
+  </c:if>
+  
+  <link rel="shortcut icon" href="/resource/assets/favicon.ico">
+  <link rel="stylesheet" href="{{contextPath}}/assets/vender/jquery-ui-1.13.0/jquery-ui.min.css" />
+  <link rel="stylesheet" href="{{contextPath}}/assets/vender/slick/slick.css"/>
+  <link rel="stylesheet" href="{{contextPath}}/assets/vender/slick/slick-theme.css"/>
+  <link rel="stylesheet" href="{{contextPath}}/assets/vender/photoswipe/photoswipe.css">
+  <link rel="stylesheet" href="{{contextPath}}/assets/vender/photoswipe/default-skin/default-skin.css">
+  <link rel="stylesheet" href="{{contextPath}}/assets/css/common.min.css?v=${versionNum}"/>
+  <script src="{{contextPath}}/assets/js/consts/lang_${locale}.js?v=${versionNum}"></script>
+  <script src="{{contextPath}}/assets/vender/jquery-3.4.1.min.js"></script>
+  <script src="{{contextPath}}/assets/vender/jquery-ui-1.13.0/jquery-ui.min.js"></script>
+  <script src="{{contextPath}}/assets/vender/handlebars.js"></script>
+  <script src="{{contextPath}}/assets/vender/moment.js"></script>
+  <script src="{{contextPath}}/assets/vender/jquery.autocomplete.js"></script>
+  <script src="{{contextPath}}/assets/vender/slick/slick.min.js"></script>
+  <script src="{{contextPath}}/assets/vender/photoswipe/photoswipe.min.js"></script>
+  <script src="{{contextPath}}/assets/vender/photoswipe/photoswipe-ui-default.min.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    let contextRoot = '${pageContext.request.contextPath}';
+
+    let userInfo = (function() {
+      var _uInfo = {};
+
+      _uInfo.corpCd = '${corpCd}';
+      _uInfo.locale = '${locale}';
+
+      _uInfo.userId = '${userId}';
+      _uInfo.sessionId = '${sessionId}';
+      _uInfo.token = '${token}';
+      _uInfo.platform = "WEB";
+      return _uInfo;
+    })();
+
+    /** 디바이스 시스템 정보 객체 **/
+    let gProfile = {
+      language: '',
+      device_type: '',
+      os: {type: '', version: ''},
+      browser: {type: '', version: ''}
+    };
+
+    let isSTTon = ('${stt}' == 'true');
+    let isTTSon = ('${tts}' == 'true');
+  </script>
+  <style type="text/css">
+    td {
+      padding: 2px;
+    }
+  </style>
+  <script type="module" src="{{contextPath}}/assets/js/index.js?v=${versionNum}"></script>
+  <script type="module">
+    import { setMessage, setOutLink, interactWorkspace, openChart, closeLoginPopup, closeAlertPopup } from '{{contextPath}}/assets/js/index.js?v=${versionNum}';
+    window.setMessage = setMessage;
+    window.setOutLink = setOutLink;
+    window.interactWorkspace = interactWorkspace;
+    window.openChart = openChart;
+    window.closeLoginPopup = closeLoginPopup;
+    window.closeAlertPopup = closeAlertPopup;
+  </script>
+
+</head>
+
+<body class="">
+<!-- 헤더 -->
+<header class="header">  <!--<h1>TPCG</h1><span style="font-weight:bold;">&nbsp;Medical Insight&nbsp;</span><span style="font-weight:bold; color:#82B8AC;"></span>-->
+  <c:if test="${corpCd eq 'medLM'}">
+    <h1>TPCG</h1><span style="font-weight:bold;">&nbsp;Generative AI&nbsp;</span><span style="font-weight:bold; color:#82B8AC;"></span>
+  </c:if>
+  <c:if test="${corpCd ne 'medLM'}">
+    <h1>TPCG</h1><span style="font-weight:bold;">&nbsp;insight&nbsp;</span><span style="font-weight:bold; color:#82B8AC;">BETA</span>
+  </c:if>
+  <button class="btnReset"></button>
+</header>
+<!-- 메뉴 -->
+<section class="gnb">
+  <nav id="nav">
+    <ul class="d-flex wrap">
+      <li tabindex="0">
+        <c:if test="${corpCd eq 'medLM'}">
+          <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="MedLM Assistant Guide">
+            Generative AI Assistant Guide
+          </button>
+        </c:if>
+        <c:if test="${corpCd ne 'medLM'}">
+          <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="Chatbot Guide">
+            Chatbot Guide
+          </button>
+        </c:if>
+      </li>
+      <li tabindex="0">
+        <button type="button" id="btnZoom" class="btn btn4" tabindex="-1">
+          Font Size
+        </button>
+      </li>
+    </ul>
+  </nav>
+  <button type="button" class="btn-collapse active" id="btn-collapse" tabindex="0">
+    <div class="nav-arr"></div>
+    Menu <span class="append show">Collapse</span>
+    <span class="collapse">Expand</span>
+  </button>
+</section>
+<!-- 채팅 데이터 출력 영역 -->
+<section class="chat nav-opened" id="chatMessage"></section>
+
+<!-- 사용자 입력 폼 -->
+<form action="" class="chat-input">
+  <div class="input-container">
+    <input type="text" id="chatTextArea" class="input" placeholder="Enter your question." aria-label="Chat input"/>
+  </div>
+  <button type="button" class="btn-mic" id="microphone" style="display: none;">Mic</button>
+  <button type="button" class="btn-zendesk-upload" id="zendeskupload"  style="display: none;" onclick="sunco.showUploadPopup()">File</button>
+  <button type="button" class="btn-submit" id="btnSend" aria-readonly="true">Send</button>
+</form>
+
+<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+    <div class="pswp__container">
+<div class="pswp__item"></div>
+<div class="pswp__item"></div>
+<div class="pswp__item"></div>
+    </div>
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+  <div class="pswp__counter"></div>
+  <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+  <button class="pswp__button pswp__button--share" title="Share"></button>
+  <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+  <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+  <div class="pswp__preloader">
+    <div class="pswp__preloader__icn">
+      <div class="pswp__preloader__cut">
+        <div class="pswp__preloader__donut"></div>
+      </div>
+    </div>
+  </div>
+      </div>
+<!-- <div class="pswp__loading-indicator"><div class="pswp__loading-indicator__line"></div></div> -->
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+    <!-- <a href="#" class="pswp__share--facebook"></a>
+    <a href="#" class="pswp__share--twitter"></a>
+    <a href="#" class="pswp__share--pinterest"></a>
+    <a href="#" download class="pswp__share--download"></a> -->
+        </div>
+    </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--section id="zendeskContainer"><%@include file="/WEB-INF/jsp/include/zendesk.jsp" %></section-->
+<!-- 이미지 레이어팝업 제공 -->
+<section id="layerPopupContainer"></section>
+
+<!-- 사용자가 쓴 채팅 -->
+<script id="me-template" type="text/x-handlebars-template">
+  <div class='user'>
+    <p class='h6 sm'>{{ msg }}</p>
+    <p class='time'>{{ time }}</p>
+  </div>
+</script>
+
+<!-- simpleResponse -->
+<script id="simpleResponses-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    {% if genAi %}
+      <div class="gen-ai">
+        <span class="icon"></span>
+        <span class="text">Generative AI</span>
+      </div>
+    {% endif %}
+    <ul>
+      {% if genAi %}
+        {% for msg in msg_list %}
+          <li class='h6 sm gen-ai' id="{{ simpleId }}">
+            {{lineBreak}}{{textToSpeech}}
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for msg in msg_list %}
+          <li class='h6 sm'>
+            {{lineBreak}}{{textToSpeech}}
+          </li>
+        {% endfor %}
+      {% endif %}
+
+      {% if linkOutSuggestion %}
+        <li class='link-out'>
+          <a href="javascript:setOutLink('{{linkOutSuggestion.url}}', '{{linkOutSuggestion.destinationName}}', true);" tabindex="0"
+             title="새 창 열림">{{linkOutSuggestion.destinationName}}</a>
+        </li>
+      {% endif %}
+
+      {% if youtube %}
+        <li class='link-out'>
+          <div id="img-container">
+            <iframe width="400" height="260" frameborder="0" title="YouTube video player" type="text/html" src="{{youtube.url}}" allow="autoplay"></iframe>
+          </div>
+        </li>
+      {% endif %}
+
+    </ul>
+
+
+    <p class='time'>{{time}}</p>
+  </div>
+  {% if suggestions %}
+    <div class='list-unstyled suggestion'>
+      <ul class='list-unstyled suggestion-list'>
+        {% for suggestion in suggestions.suggestions %}
+          <li>
+            <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</script>
+
+<!-- basicCard -->
+<script id="basicCard-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    <ul>
+      {% for msg in msg_list %}
+        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
+      {% endfor %}
+      <li class='basic-card'>
+        {% if basicCard.title  %}
+          <h3 class='h6 sm'>{{basicCard.title}}</h3>
+        {% endif %}
+        {% if basicCard.image %}
+          <div class='img-container'>
+            <img src='{{basicCard.image.imageUri}}' alt='{{basicCard.image.accessibilityText}}' class='img img-fluid mapImg'/>
+          </div>
+        {% endif %}
+        {% if basicCard.subtitle  %}
+          <p class='h6 sm'>
+            {{basicCard.subtitle}}
+          </p>
+        {% endif %}
+        <p class='p lg'>{{lineBreak}} {{basicCard.formattedText}}</p>
+        {% if btns %}
+          {% for btn in btns %}
+            <a href='javascript:setOutLink("{{this.openUriAction.uri}}");' class='link' tabindex="0" title="Open in New Window">{{this.title}}</a>
+          {% endfor %}
+        {% endif %}
+      </li>
+
+      {% if linkOutSuggestion %}
+        <li class='link-out'>
+          <a href="javascript:setOutLink('{{linkOutSuggestion.url}}', '{{linkOutSuggestion.destinationName}}', true);">{{linkOutSuggestion.destinationName}}</a>
+        </li>
+      {% endif %}
+    </ul>
+    <p class='time'>{{time}}</p>
+  </div>
+</script>
+
+<!-- suggestion chip -->
+<script id="suggestion1-template" type="text/x-handlebars-template">
+  <div class='list-unstyled suggestion'>
+    <ul class='list-unstyled suggestion-list'>
+      {% for msg in list %}
+        <li>
+          <button
+              type='button'
+              class='btn'
+              onclick="setMessage('{{this}}');"
+          >{{this}}</button>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</script>
+
+<!-- carousel card -> carouselSelect -->
+<script id="carouselSelect-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    <ul>
+      {% for msg in list %}
+        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
+      {% endfor %}
+    </ul>
+    <ul class='carousel-card'>
+      {% for select in carouselSelect %}
+        <li class='basic-card'>
+          {% if title %}
+            <h3 class='h6 sm'>{{lineBreak}} {{title}}</h3>
+          {% endif %}
+          {% if this.img %}
+            <div class='img-container'>
+              <img src='{{this.img}}' alt='' class='img'/>
+            </div>
+          {% endif %}
+          {% if image %}
+            <div class='img-container'>
+              <img src='{{image.imageUri}}' alt='{{image.accessibilityText}}' class='img img-fluid mapImg'/>
+            </div>
+          {% endif %}
+          {% if subtitle  %}
+            <p class='h6 sm'>{{subtitle}}</p>
+          {% endif %}
+          <p class='p lg'>{{lineBreak}} {{description}}</p>
+          {% if openUrlAction %}
+            <a href="javascript:setMessage('{{title}}');" class='link' target='_blank' tabindex="0">상세 보기</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <p class='time'>{{time}}</p>
+  </div>
+  {% if suggestions %}
+    <div class='list-unstyled suggestion'>
+      <ul class='list-unstyled suggestion-list'>
+        {% for suggestion in suggestions.suggestions %}
+          <li>
+            <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</script>
+
+<!-- Vertex AI Search & Conversation Website Link -->
+<script id="vertex-ai-website-template" type="text/x-handlebars-template">
+  <div class='bot no-icon'>
+    <ul class='carousel-card'>
+      {% for content in richContent %}
+      <li class='basic-card'>
+
+        {% if subtitle  %}
+        <p class='h6 sm'>{{subtitle}}</p>
+        {% endif %}
+        {% if actionLink %}
+        <a href='javascript:setOutLink("{{actionLink}}");' class='link' tabindex="0" title="Workspace 이동">{{title}}</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    <p class='time'>{{time}}</p>
+  </div>
+</script>
+
+<!-- browseCarousel -->
+<script id="browseCarousel-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    <ul>
+      {% for msg in msgs %}
+        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
+      {% endfor %}
+    </ul>
+    <ul class='carousel-card'>
+      {% for content in browseCarousel %}
+        <li class='basic-card'>
+          {% if title  %}
+            <h3 class='h6 sm'>{{lineBreak}} {{title}}</h3>
+          {% endif %}
+          {% if this.img %}
+            <div class='img-container'>
+              <img src='{{this.img}}' alt='' class='img'/>
+            </div>
+          {% endif %}
+          {% if image %}
+            <div class='img-container'>
+              <img src='{{image.imageUri}}' alt='{{image.accessibilityText}}' class='img img-fluid mapImg'/>
+            </div>
+          {% endif %}
+          {% if subtitle  %}
+            <p class='h6 sm'>{{subtitle}}</p>
+          {% endif %}
+          <p class='p lg'>{{lineBreak}} {{description}}</p>
+          {% if openUrlAction %}
+            <a href='javascript:setOutLink("{{openUrlAction.url}}");' class='link' tabindex="0" title="새 창 열림">상세 보기</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <p class='time'>{{time}}</p>
+  </div>
+  {% if suggestions %}
+    <div class='list-unstyled suggestion'>
+      <ul class='list-unstyled suggestion-list'>
+        {% for content in suggestions.suggestions %}
+          <li>
+            <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</script>
+
+
+<!-- match engine -->
+<script id="match-engine-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    <div class="gen-ai">
+      <span class="icon"></span>
+      <span class="text">Generative AI</span>
+    </div>
+    <ul>
+      {% for msg in list %}
+        <li class='h6 sm gen-ai' id="{{simpleId}}">
+          {{lineBreak}} {{textToSpeech}}
+        </li>
+      {% endfor %}
+    </ul>
+    <ul class='carousel-card'>
+      {% for content in browseCarousel %}
+      <li class='basic-card'>
+        {% if title  %}
+        <h3 class='h6 sm' style='background: url({% if image.imageUri %}{{image.imageUri}}{% else %}/assets/image/file-svgrepo-com.svg{% endif %}) no-repeat -3px 3px;'>{{lineBreak}} {{title}}</h3>
+        {% endif %}
+        {% if subtitle %}
+        <p class='h6 sm'>{{subtitle}}</p>
+        {% endif %}
+        <p class='p lg'>{{lineBreak}} {{description}}</p>
+        {% if openUrlAction %}
+        <a href='javascript:interactWorkspace("{{openUrlAction.url}}");' class='link' tabindex="0" title="Workspace 이동">open file</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    <p class='time'>{{time}}</p>
+  </div>
+  {% if suggestions %}
+  <div class='list-unstyled suggestion'>
+    <ul class='list-unstyled suggestion-list'>
+      {% for content in suggestions.suggestions %}
+      <li>
+        <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</script>
+
+<!-- medlm intro -->
+<script id="medlmIntro-template" type="text/x-handlebars-template">
+  <div class='bot'>
+    <ul>
+      <li class='basic-card'>
+        <div class='img-container'>
+          <img src='/assets/img/med_lm/intro1.png' alt='intro1.png' class='img img-fluid mapImg'/>
+        </div>
+        <p class='h6 sm'>
+          Med-PaLM 2 has been carefully aligned to the medical domain via:
+        </p>
+        <p class='p lg'>● Curated datasets and expert demonstrations<br/>
+          ● Rigorous clinical evaluation<br/>
+          &nbsp; &nbsp; ○ Across 12 axes of performance, including medical/scientific consensus, bias and harm<br/>
+          &nbsp; &nbsp; ○ Evaluated with medical experts diverse in clinical disciplines, personal demographics, and geography to add context and nuance to our model’s understanding
+        </p>
+      </li>
+
+      <li class='basic-card'>
+        <div class='img-container'>
+          <img src='/assets/img/med_lm/intro2.png' alt='intro2.png' class='img img-fluid mapImg'/>
+        </div>
+        <p class='p lg'>● Med-PaLM 2 is the first AI system to obtain expert doctor score on USMLE<br/>
+          ● Our model, Med-PaLM 2, reaches 85%+ accuracy on par with expert test takers and an almost 18% leap over Med-PaLM<br/>
+          ● Med-PaLM 2 first to achieve passing score of over 70% in Indian Medical entrance exam questions
+        </p>
+      </li>
+
+      <li class='basic-card'>
+        <div class='img-container'>
+          <img src='/assets/img/med_lm/intro3.png' alt='intro3.png' class='img img-fluid mapImg'/>
+        </div>
+        <p class='p lg'>More useful and avoid Risks with MedLM decision supports</p>
+      </li>
+
+      <li class='basic-card'>
+        <div class='img-container'>
+          <img src='/assets/img/med_lm/intro4.png' alt='intro4.png' class='img img-fluid mapImg'/>
+        </div>
+        <p class='h6 sm'>
+          Suggested applications for exploration include, but are not limited to:
+        </p>
+        <p class='p lg'>
+          ● Rich LLM-powered discussion/chat in the medical domain<br/>
+          ● Question-answering to complex medical queries<br/>
+          ● Searching and inferencing over complicated and unstructured medical texts<br/>
+          ● Drafting short- and long-form responses in the <br/>
+          ● medical domain<br/>
+          ● Summarizing documentation<br/>
+          ● Integrating information from different source <br/>
+          ● systems into a cohesive report or document
+          </p>
+      </li>
+    </ul>
+  </div>
+</script>
+
+<!-- chart 영역 -->
+<script id="chart-template" type="text/x-handlebars-template">
+  <div class='bot no-icon'>
+    <button type="button" class="send-chart-btn btn" onclick="openChart()">크게 보기</button>
+    <div id="{{chartId}}">
+
+    </div>
+  </div>
+</script>
+
+<!-- 말풍선 깜빡임 -->
+<script id="ready-template" type="text/x-handlebars-template">
+  <div class='bot dv-ready'>
+    <ul>
+      <li class='ready'>
+        <span class='dot'></span>
+        <span class='dot'></span>
+        <span class='dot'></span>
+      </li>
+    </ul>
+  </div>
+</script>
+
+<!-- 오류 메시지 -->
+<!-- Error Message -->
+<script id="error-template" type="text/x-handlebars-template">
+  <div class='errorMsg text-center'>
+    <p class='p'>Communication with the server has ended.
+      <br/>Please click the button below to restart the chatbot.</p>
+    <button type='button' class='btnChatStart' onclick='window.location.reload()'>Restart</button>
+  </div>
+</script>
+
+<script id="popup-login-template" type="text/x-handlebars-template">
+  <div id="layerPopupWrap">
+    <div class="layerPopup alertPopup">
+      {% if title %}
+        <div class="top">
+          <h1>{{title}}</h1>
+        </div>
+      {% endif %}
+      <div class="cont">
+        {% if description %}
+        <div class="contBox">
+          <h2>Login</h2>
+          <form name="loginForm">
+          <table cellspacing="0" cellpadding="0" style="border: none;">
+            <tbody>
+              <tr>
+                <td style="text-align: right;"><label for="inputEmail" style="text-align: right;">Email</label></td>
+                <td><input type="text" name="inputEmail" id="inputEmail"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;"><label for="inputPass" style="text-align: right;">Password</label></td>
+                <td><input type="password" name="inputPass" id="inputPass"></td>
+              </tr>
+            </tbody>
+          </table>
+          </form>
+        </div>
+        {% endif %}
+        <div style="text-align: center; color: red;"><span id="loginError"></span></div>
+        <div class="btnListBox">
+          <ul class="btnListUl">
+            <li>
+              <button type="button" onclick="closeLoginPopup();">Submit</button>
+            </li>
+          </ul>
+        </div>
+        <div style="text-align: right;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSejiwal5BhnmcKe1HqC8XrX-ZgXhw9Uipu2e8r_sXX1UVnh_Q/viewform?vc=0&amp;c=0&amp;w=1&amp;flr=0&amp;resourcekey=0-O-wYzZOboih1UeDSFvp0VA" style="text-decoration: underline; color: blue; "> Register </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="popup-alert-template" type="text/x-handlebars-template">
+  <div id="layerPopupWrap">
+    <div class="layerPopup alertPopup">
+      {% if title %}
+        <div class="top">
+          <h1>{{title}}</h1>
+        </div>
+      {% endif %}
+      <div class="cont">
+        {% if description %}
+          <div class="contBox">
+            <h2>{{description}}</h2>
+          </div>
+        {% endif %}
+        <div class="btnListBox">
+          <ul class="btnListUl">
+            <li>
+              <button type="button" onclick="closeAlertPopup(null, null, {{callback}});">{{btn}}</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+</body>
+</html>

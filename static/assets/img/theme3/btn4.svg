@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="icon_menu4" transform="translate(-50 -50)">
+    <path id="패스_15" data-name="패스 15" d="M55.455,51.818V50H50v5.455h1.818V53.1L54.812,56.1,56.1,54.812,53.1,51.818Z" fill="#4b55ce"/>
+    <path id="패스_16" data-name="패스 16" d="M203.572,50v1.818h2.351l-2.993,2.994,1.286,1.286,2.994-2.994v2.351h1.818V50Z" transform="translate(-139.026)" fill="#4b55ce"/>
+    <path id="패스_17" data-name="패스 17" d="M207.208,205.922l-2.994-2.993-1.286,1.286,2.993,2.994h-2.351v1.818h5.455v-5.455h-1.818Z" transform="translate(-139.026 -139.026)" fill="#4b55ce"/>
+    <path id="패스_18" data-name="패스 18" d="M54.812,202.929l-2.994,2.993v-2.351H50v5.455h5.455v-1.818H53.1l2.994-2.994Z" transform="translate(0 -139.026)" fill="#4b55ce"/>
+  </g>
+</svg>

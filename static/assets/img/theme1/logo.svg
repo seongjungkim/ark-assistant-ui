@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 110">
+  <rect width="46" height="46" x="5" y="5" fill="#A6A6A6" rx="5" />
+  <rect width="46" height="46" x="60" y="5" fill="#7F7F7F" rx="5" />
+  <rect width="46" height="46" x="60" y="60" fill="#404040" rx="5" />
+  <text x="115" y="103" fill="#161C24" font-family="raleway, sans-serif" font-weight="bold" font-size="124">T</text>
+  <text x="190" y="103" fill="#161C24" font-family="raleway, sans-serif" font-weight="bold" font-size="124">P</text>
+  <text x="277" y="103" fill="#82B8AC" font-family="raleway, sans-serif" font-weight="bold" font-size="124">C</text>
+  <text x="370" y="103" fill="#82B8AC" font-family="raleway, sans-serif" font-weight="bold" font-size="124">G</text>
+</svg>
