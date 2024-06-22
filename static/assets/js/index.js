@@ -55,13 +55,7 @@ let _lastChartData = {};
 function ajaxCall(msg) {
   console.log('사용자가 입력한 메시지 : ' + msg);
 
-  //Common.sendPostMessage(msg);
-  if(sunco.isConnected()) {
-    sunco.sendMessage(msg);
-    isProcessing = false;
-    return;
-  }
-
+  alert('ajaxCall: ' + msg);
   $.ajax({
     type: 'POST',
     url: contextRoot + '/chatbot/query',

@@ -1,6 +1,4 @@
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="session" />
-<c:set var="versionNum" value="${activeProfile eq 'local' ? ran : '0.033'}" />
-
+{% set versionNum = ran if activeProfile == 'local' else '0.033' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,12 +10,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   />
-  <c:if test="${corpCd eq 'medLM'}">
+  {% if corpCd == 'VertexAI' %}
   <title>Ark AI Assistant</title>
-  </c:if>
-  <c:if test="${corpCd ne 'medLM'}">
+  {% else %}
   <title>TPCG CHATBOT BETA</title>
-  </c:if>
+  {% endif %}
   
   <link rel="shortcut icon" href="/resource/assets/favicon.ico">
   <link rel="stylesheet" href="{{contextPath}}/assets/vender/jquery-ui-1.13.0/jquery-ui.min.css" />
@@ -25,8 +22,8 @@
   <link rel="stylesheet" href="{{contextPath}}/assets/vender/slick/slick-theme.css"/>
   <link rel="stylesheet" href="{{contextPath}}/assets/vender/photoswipe/photoswipe.css">
   <link rel="stylesheet" href="{{contextPath}}/assets/vender/photoswipe/default-skin/default-skin.css">
-  <link rel="stylesheet" href="{{contextPath}}/assets/css/common.min.css?v=${versionNum}"/>
-  <script src="{{contextPath}}/assets/js/consts/lang_${locale}.js?v=${versionNum}"></script>
+  <link rel="stylesheet" href="{{contextPath}}/assets/css/common.min.css?v={{versionNum}}"/>
+  <script src="{{contextPath}}/assets/js/consts/lang_{{locale}}.js?v={{versionNum}}"></script>
   <script src="{{contextPath}}/assets/vender/jquery-3.4.1.min.js"></script>
   <script src="{{contextPath}}/assets/vender/jquery-ui-1.13.0/jquery-ui.min.js"></script>
   <script src="{{contextPath}}/assets/vender/handlebars.js"></script>
@@ -38,13 +35,13 @@
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
-    let contextRoot = '${pageContext.request.contextPath}';
+    let contextRoot = '';
 
     let userInfo = (function() {
       var _uInfo = {};
 
-      _uInfo.corpCd = '${corpCd}';
-      _uInfo.locale = '${locale}';
+      _uInfo.corpCd = '{{corpCd}}';
+      _uInfo.locale = '{{locale}}';
 
       _uInfo.userId = '${userId}';
       _uInfo.sessionId = '${sessionId}';
@@ -69,9 +66,9 @@
       padding: 2px;
     }
   </style>
-  <script type="module" src="{{contextPath}}/assets/js/index.js?v=${versionNum}"></script>
+  <script type="module" src="{{contextPath}}/assets/js/index.js?v={{versionNum}}"></script>
   <script type="module">
-    import { setMessage, setOutLink, interactWorkspace, openChart, closeLoginPopup, closeAlertPopup } from '{{contextPath}}/assets/js/index.js?v=${versionNum}';
+    import { setMessage, setOutLink, interactWorkspace, openChart, closeLoginPopup, closeAlertPopup } from '{{contextPath}}/assets/js/index.js?v={{versionNum}}';
     window.setMessage = setMessage;
     window.setOutLink = setOutLink;
     window.interactWorkspace = interactWorkspace;
@@ -85,12 +82,11 @@
 <body class="">
 <!-- 헤더 -->
 <header class="header">  <!--<h1>TPCG</h1><span style="font-weight:bold;">&nbsp;Medical Insight&nbsp;</span><span style="font-weight:bold; color:#82B8AC;"></span>-->
-  <c:if test="${corpCd eq 'medLM'}">
+{% if corpCd == 'VertexAI' %}
     <h1>TPCG</h1><span style="font-weight:bold;">&nbsp;Generative AI&nbsp;</span><span style="font-weight:bold; color:#82B8AC;"></span>
-  </c:if>
-  <c:if test="${corpCd ne 'medLM'}">
+{% else %}
     <h1>TPCG</h1><span style="font-weight:bold;">&nbsp;insight&nbsp;</span><span style="font-weight:bold; color:#82B8AC;">BETA</span>
-  </c:if>
+{% endif %}
   <button class="btnReset"></button>
 </header>
 <!-- 메뉴 -->
@@ -98,16 +94,15 @@
   <nav id="nav">
     <ul class="d-flex wrap">
       <li tabindex="0">
-        <c:if test="${corpCd eq 'medLM'}">
+{% if corpCd == 'VertexAI' %}
           <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="MedLM Assistant Guide">
             Generative AI Assistant Guide
           </button>
-        </c:if>
-        <c:if test="${corpCd ne 'medLM'}">
+{% else %}
           <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="Chatbot Guide">
-            Chatbot Guide
+            Chat Guide
           </button>
-        </c:if>
+{% endif %}
       </li>
       <li tabindex="0">
         <button type="button" id="btnZoom" class="btn btn4" tabindex="-1">
@@ -471,7 +466,7 @@
     <ul>
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='/assets/img/med_lm/intro1.png' alt='intro1.png' class='img img-fluid mapImg'/>
+          <img src='{{contextPath}}/assets/img/med_lm/intro1.png' alt='intro1.png' class='img img-fluid mapImg'/>
         </div>
         <p class='h6 sm'>
           Med-PaLM 2 has been carefully aligned to the medical domain via:
@@ -485,7 +480,7 @@
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='/assets/img/med_lm/intro2.png' alt='intro2.png' class='img img-fluid mapImg'/>
+          <img src='{{contextPath}}/assets/img/med_lm/intro2.png' alt='intro2.png' class='img img-fluid mapImg'/>
         </div>
         <p class='p lg'>● Med-PaLM 2 is the first AI system to obtain expert doctor score on USMLE<br/>
           ● Our model, Med-PaLM 2, reaches 85%+ accuracy on par with expert test takers and an almost 18% leap over Med-PaLM<br/>
@@ -495,14 +490,14 @@
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='/assets/img/med_lm/intro3.png' alt='intro3.png' class='img img-fluid mapImg'/>
+          <img src='{{contextPath}}/assets/img/med_lm/intro3.png' alt='intro3.png' class='img img-fluid mapImg'/>
         </div>
         <p class='p lg'>More useful and avoid Risks with MedLM decision supports</p>
       </li>
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='/assets/img/med_lm/intro4.png' alt='intro4.png' class='img img-fluid mapImg'/>
+          <img src='{{contextPath}}/assets/img/med_lm/intro4.png' alt='intro4.png' class='img img-fluid mapImg'/>
         </div>
         <p class='h6 sm'>
           Suggested applications for exploration include, but are not limited to:
@@ -552,50 +547,6 @@
     <p class='p'>Communication with the server has ended.
       <br/>Please click the button below to restart the chatbot.</p>
     <button type='button' class='btnChatStart' onclick='window.location.reload()'>Restart</button>
-  </div>
-</script>
-
-<script id="popup-login-template" type="text/x-handlebars-template">
-  <div id="layerPopupWrap">
-    <div class="layerPopup alertPopup">
-      {% if title %}
-        <div class="top">
-          <h1>{{title}}</h1>
-        </div>
-      {% endif %}
-      <div class="cont">
-        {% if description %}
-        <div class="contBox">
-          <h2>Login</h2>
-          <form name="loginForm">
-          <table cellspacing="0" cellpadding="0" style="border: none;">
-            <tbody>
-              <tr>
-                <td style="text-align: right;"><label for="inputEmail" style="text-align: right;">Email</label></td>
-                <td><input type="text" name="inputEmail" id="inputEmail"></td>
-              </tr>
-              <tr>
-                <td style="text-align: right;"><label for="inputPass" style="text-align: right;">Password</label></td>
-                <td><input type="password" name="inputPass" id="inputPass"></td>
-              </tr>
-            </tbody>
-          </table>
-          </form>
-        </div>
-        {% endif %}
-        <div style="text-align: center; color: red;"><span id="loginError"></span></div>
-        <div class="btnListBox">
-          <ul class="btnListUl">
-            <li>
-              <button type="button" onclick="closeLoginPopup();">Submit</button>
-            </li>
-          </ul>
-        </div>
-        <div style="text-align: right;">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSejiwal5BhnmcKe1HqC8XrX-ZgXhw9Uipu2e8r_sXX1UVnh_Q/viewform?vc=0&amp;c=0&amp;w=1&amp;flr=0&amp;resourcekey=0-O-wYzZOboih1UeDSFvp0VA" style="text-decoration: underline; color: blue; "> Register </a>
-        </div>
-      </div>
-    </div>
   </div>
 </script>
 
