@@ -1,4 +1,5 @@
 {% set versionNum = ran if activeProfile == 'local' else '0.033' %}
+{% set theme = 'theme1' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +80,7 @@
 
 </head>
 
-<body class="">
+<body class="{{theme}}">
 <!-- 헤더 -->
 <header class="header">  <!--<h1>TPCG</h1><span style="font-weight:bold;">&nbsp;Medical Insight&nbsp;</span><span style="font-weight:bold; color:#82B8AC;"></span>-->
 {% if corpCd == 'VertexAI' %}
@@ -176,45 +177,48 @@
 <section id="layerPopupContainer"></section>
 
 <!-- 사용자가 쓴 채팅 -->
+{% raw %}
 <script id="me-template" type="text/x-handlebars-template">
   <div class='user'>
-    <p class='h6 sm'>{{ msg }}</p>
-    <p class='time'>{{ time }}</p>
+    <p class='h6 sm'>{{msg}}</p>
+    <p class='time'>{{time}}</p>
   </div>
 </script>
+{% endraw %}
 
 <!-- simpleResponse -->
+{% raw %}
 <script id="simpleResponses-template" type="text/x-handlebars-template">
   <div class='bot'>
-    {% if genAi %}
+    {% if genAi is defined %}
       <div class="gen-ai">
         <span class="icon"></span>
         <span class="text">Generative AI</span>
       </div>
     {% endif %}
     <ul>
-      {% if genAi %}
-        {% for msg in msg_list %}
-          <li class='h6 sm gen-ai' id="{{ simpleId }}">
-            {{lineBreak}}{{textToSpeech}}
+      {% if genAi is defined %}
+        {% for textToSpeech in simpleResponses %}
+          <li class='h6 sm gen-ai' id="{{simpleId}}">
+            {{textToSpeech}}
           </li>
         {% endfor %}
       {% else %}
-        {% for msg in msg_list %}
+        {% for textToSpeech in simpleResponses %}
           <li class='h6 sm'>
-            {{lineBreak}}{{textToSpeech}}
+            {{textToSpeech}}
           </li>
         {% endfor %}
       {% endif %}
 
-      {% if linkOutSuggestion %}
+      {% if linkOutSuggestion is defined %}
         <li class='link-out'>
           <a href="javascript:setOutLink('{{linkOutSuggestion.url}}', '{{linkOutSuggestion.destinationName}}', true);" tabindex="0"
              title="새 창 열림">{{linkOutSuggestion.destinationName}}</a>
         </li>
       {% endif %}
 
-      {% if youtube %}
+      {% if youtube is defined %}
         <li class='link-out'>
           <div id="img-container">
             <iframe width="400" height="260" frameborder="0" title="YouTube video player" type="text/html" src="{{youtube.url}}" allow="autoplay"></iframe>
@@ -227,7 +231,7 @@
 
     <p class='time'>{{time}}</p>
   </div>
-  {% if suggestions %}
+  {% if suggestions is defined %}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
         {% for suggestion in suggestions.suggestions %}
@@ -239,8 +243,10 @@
     </div>
   {% endif %}
 </script>
+{% endraw %}
 
 <!-- basicCard -->
+{% raw %}
 <script id="basicCard-template" type="text/x-handlebars-template">
   <div class='bot'>
     <ul>
@@ -278,6 +284,7 @@
     <p class='time'>{{time}}</p>
   </div>
 </script>
+{% endraw %}
 
 <!-- suggestion chip -->
 <script id="suggestion1-template" type="text/x-handlebars-template">

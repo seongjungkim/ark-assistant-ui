@@ -18,7 +18,8 @@ async def home_view(request: Request):
         "contextPath": "/resource",
         "corpCd": "VertexAI",
         "locale": "ko_KR",
-        "activeProfile": "remote"
+        "activeProfile": "remote",
+        "genAi": "Yes"
     }
 
     response = templates.TemplateResponse("main.html", template_data)

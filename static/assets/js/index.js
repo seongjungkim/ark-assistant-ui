@@ -55,7 +55,6 @@ let _lastChartData = {};
 function ajaxCall(msg) {
   console.log('사용자가 입력한 메시지 : ' + msg);
 
-  alert('ajaxCall: ' + msg);
   $.ajax({
     type: 'POST',
     url: contextRoot + '/chatbot/query',
@@ -76,6 +75,7 @@ function ajaxCall(msg) {
 
       if (data.token) {userInfo.token = data.token;}
 
+      var genAi = data.genAi;
       var resultSource = data.result.source;
       var simpleResponses = data.result.simpleResponses;
       var suggestions = data.result.suggestions;
@@ -87,6 +87,8 @@ function ajaxCall(msg) {
       var emoticon = data.result.emoticon;
       var linkOutSuggestion = data.result.linkOutSuggestion;
       var payload = data.result.payload;
+
+      console.log('genAi:' + genAi)
       if (!handleErrorStatus(data)) {
         return;
       }
@@ -115,6 +117,7 @@ function ajaxCall(msg) {
             === undefined && carouselSelect === undefined) {
           console.log('simpleResponses 존재 >>>');
           var source = $('#simpleResponses-template').html();
+          console.log(source);
           var template = Handlebars.compile(source);
 
           for(let i=0; i < simpleResponses.simpleResponses.length; i++) {
@@ -406,9 +409,9 @@ function ajaxCall(msg) {
 
       if(msg == 'welcome') {
         showIntro();
-
-        let description = "Login is required.";
-        webChatHan.loginPopup({ description });
+        // Remove login process
+        //let description = "Login is required.";
+        //webChatHan.loginPopup({ description });
       }
     },
   });
@@ -710,6 +713,7 @@ function getTime() {
  * @returns
  */
 export function setMessage(text) {
+  console.log("setMessage:" + text);
   if(isProcessing) {
     console.log('isProcessing !!!!!!!!!!!!!!');
     return;
@@ -718,7 +722,9 @@ export function setMessage(text) {
   $('#input-suggestion, .autocomplete-suggestions').hide();
   $('.autocomplete-suggestions').find('li').length > 0;
   let source = $('#me-template').html();
+  console.log('me-template: ' + source);
   let template = Handlebars.compile(source);
+  console.log('me-template: ' + template);
   let AttachData = {
     msg: text,
     time: new Handlebars.SafeString(getTime()),
