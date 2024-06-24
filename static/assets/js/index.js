@@ -88,7 +88,8 @@ function ajaxCall(msg) {
       var linkOutSuggestion = data.result.linkOutSuggestion;
       var payload = data.result.payload;
 
-      console.log('genAi:' + genAi)
+      console.log('genAi:' + genAi);
+      console.log('simpleResponses:' + simpleResponses);
       if (!handleErrorStatus(data)) {
         return;
       }
@@ -117,8 +118,9 @@ function ajaxCall(msg) {
             === undefined && carouselSelect === undefined) {
           console.log('simpleResponses 존재 >>>');
           var source = $('#simpleResponses-template').html();
-          console.log(source);
+          console.log('#simpleResponses-template source: ' + source);
           var template = Handlebars.compile(source);
+          console.log('#simpleResponses-template template: ' + template);
 
           for(let i=0; i < simpleResponses.simpleResponses.length; i++) {
             let temp = simpleResponses.simpleResponses[i].textToSpeech;
@@ -154,6 +156,7 @@ function ajaxCall(msg) {
           }
 
           var html = template(AttachData);
+          console.log('html: ' + html);
           $('#chatMessage').append(html);
         }
 
@@ -212,6 +215,7 @@ function ajaxCall(msg) {
           }
 
           var html = template(AttachData);
+          console.log('html: ' + html);
           $('#chatMessage').append(html);
           setCarousel(randomId);
         }
@@ -408,8 +412,8 @@ function ajaxCall(msg) {
       isProcessing = false;
 
       if(msg == 'welcome') {
-        showIntro();
         // Remove login process
+        //showIntro();
         //let description = "Login is required.";
         //webChatHan.loginPopup({ description });
       }
@@ -431,7 +435,7 @@ function showIntro() {
 
   var html = template(AttachData);
   $('#chatMessage').append(html);
-  //autoScroll();
+  autoScroll();
 }
 
 export function openChart() {
@@ -722,14 +726,15 @@ export function setMessage(text) {
   $('#input-suggestion, .autocomplete-suggestions').hide();
   $('.autocomplete-suggestions').find('li').length > 0;
   let source = $('#me-template').html();
-  console.log('me-template: ' + source);
+  console.log('me-template source: ' + source);
   let template = Handlebars.compile(source);
-  console.log('me-template: ' + template);
+  console.log('me-template template: ' + template);
   let AttachData = {
     msg: text,
     time: new Handlebars.SafeString(getTime()),
   };
   let html = template(AttachData);
+  console.log('html: ' + html);
   $('#chatMessage').append(html);
   ajaxCall(text);
   $('#chatTextArea').val('');

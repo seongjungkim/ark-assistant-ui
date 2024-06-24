@@ -3252,9 +3252,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // Template is only compiled on first use and cached after that point.
 	  function ret(context, execOptions) {
+		console.log('compiled: ' + compiled);
 	    if (!compiled) {
 	      compiled = compileInput();
 	    }
+		console.log('compiled: ' + compiled);
+		console.log('compiled context: ' + context);
 	    return compiled.call(this, context, execOptions);
 	  }
 	  ret._setup = function (setupOptions) {

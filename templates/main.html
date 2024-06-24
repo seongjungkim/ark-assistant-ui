@@ -44,9 +44,9 @@
       _uInfo.corpCd = '{{corpCd}}';
       _uInfo.locale = '{{locale}}';
 
-      _uInfo.userId = '${userId}';
-      _uInfo.sessionId = '${sessionId}';
-      _uInfo.token = '${token}';
+      _uInfo.userId = '{{userId}}';
+      _uInfo.sessionId = '{{sessionId}}';
+      _uInfo.token = '{{token}}';
       _uInfo.platform = "WEB";
       return _uInfo;
     })();
@@ -59,8 +59,8 @@
       browser: {type: '', version: ''}
     };
 
-    let isSTTon = ('${stt}' == 'true');
-    let isTTSon = ('${tts}' == 'true');
+    let isSTTon = ('{{stt}}' == 'true');
+    let isTTSon = ('{{tts}}' == 'true');
   </script>
   <style type="text/css">
     td {
@@ -176,8 +176,8 @@
 <!-- 이미지 레이어팝업 제공 -->
 <section id="layerPopupContainer"></section>
 
-<!-- 사용자가 쓴 채팅 -->
 {% raw %}
+<!-- 사용자가 쓴 채팅 -->
 <script id="me-template" type="text/x-handlebars-template">
   <div class='user'>
     <p class='h6 sm'>{{msg}}</p>
@@ -186,111 +186,112 @@
 </script>
 {% endraw %}
 
-<!-- simpleResponse -->
 {% raw %}
+<!-- simpleResponse -->
 <script id="simpleResponses-template" type="text/x-handlebars-template">
   <div class='bot'>
-    {% if genAi is defined %}
+    {{#if genAi}}
       <div class="gen-ai">
         <span class="icon"></span>
         <span class="text">Generative AI</span>
       </div>
-    {% endif %}
+    {{/if}}
     <ul>
-      {% if genAi is defined %}
-        {% for textToSpeech in simpleResponses %}
-          <li class='h6 sm gen-ai' id="{{simpleId}}">
-            {{textToSpeech}}
+      {{#if genAi}}
+        {{#each msg}}
+          <li class='h6 sm gen-ai' id="{{../simpleId}}">
+            {{lineBreak textToSpeech}}
           </li>
-        {% endfor %}
-      {% else %}
-        {% for textToSpeech in simpleResponses %}
+        {{/each}}
+      {{else}}
+        {{#each msg}}
           <li class='h6 sm'>
-            {{textToSpeech}}
+            {{lineBreak textToSpeech}}
           </li>
-        {% endfor %}
-      {% endif %}
+        {{/each}}
+      {{/if}}
 
-      {% if linkOutSuggestion is defined %}
+      {{#if linkOutSuggestion}}
         <li class='link-out'>
           <a href="javascript:setOutLink('{{linkOutSuggestion.url}}', '{{linkOutSuggestion.destinationName}}', true);" tabindex="0"
              title="새 창 열림">{{linkOutSuggestion.destinationName}}</a>
         </li>
-      {% endif %}
+      {{/if}}
 
-      {% if youtube is defined %}
+      {{#if youtube}}
         <li class='link-out'>
           <div id="img-container">
             <iframe width="400" height="260" frameborder="0" title="YouTube video player" type="text/html" src="{{youtube.url}}" allow="autoplay"></iframe>
           </div>
         </li>
-      {% endif %}
+      {{/if}}
 
     </ul>
 
 
     <p class='time'>{{time}}</p>
   </div>
-  {% if suggestions is defined %}
+  {{#if suggestions}}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
-        {% for suggestion in suggestions.suggestions %}
+        {{#each suggestions.suggestions}}
           <li>
             <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
           </li>
-        {% endfor %}
+        {{/each}}
       </ul>
     </div>
-  {% endif %}
+  {{/if}}
 </script>
 {% endraw %}
 
-<!-- basicCard -->
 {% raw %}
+<!-- basicCard -->
 <script id="basicCard-template" type="text/x-handlebars-template">
   <div class='bot'>
     <ul>
-      {% for msg in msg_list %}
-        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
-      {% endfor %}
+      {{#each msg}}
+        <li class='h6 sm'>{{lineBreak textToSpeech}}</li>
+      {{/each}}
       <li class='basic-card'>
-        {% if basicCard.title  %}
+        {{#if basicCard.title }}
           <h3 class='h6 sm'>{{basicCard.title}}</h3>
-        {% endif %}
-        {% if basicCard.image %}
+        {{/if}}
+        {{#if basicCard.image}}
           <div class='img-container'>
             <img src='{{basicCard.image.imageUri}}' alt='{{basicCard.image.accessibilityText}}' class='img img-fluid mapImg'/>
           </div>
-        {% endif %}
-        {% if basicCard.subtitle  %}
+        {{/if}}
+        {{#if basicCard.subtitle }}
           <p class='h6 sm'>
             {{basicCard.subtitle}}
           </p>
-        {% endif %}
-        <p class='p lg'>{{lineBreak}} {{basicCard.formattedText}}</p>
-        {% if btns %}
-          {% for btn in btns %}
+        {{/if}}
+        <p class='p lg'>{{lineBreak basicCard.formattedText}}</p>
+        {{#if btns}}
+          {{#each btns}}
             <a href='javascript:setOutLink("{{this.openUriAction.uri}}");' class='link' tabindex="0" title="Open in New Window">{{this.title}}</a>
-          {% endfor %}
-        {% endif %}
+          {{/each}}
+        {{/if}}
       </li>
 
-      {% if linkOutSuggestion %}
+      {{#if linkOutSuggestion}}
         <li class='link-out'>
           <a href="javascript:setOutLink('{{linkOutSuggestion.url}}', '{{linkOutSuggestion.destinationName}}', true);">{{linkOutSuggestion.destinationName}}</a>
         </li>
-      {% endif %}
+      {{/if}}
     </ul>
     <p class='time'>{{time}}</p>
   </div>
 </script>
 {% endraw %}
 
+{% raw %}
 <!-- suggestion chip -->
 <script id="suggestion1-template" type="text/x-handlebars-template">
   <div class='list-unstyled suggestion'>
     <ul class='list-unstyled suggestion-list'>
-      {% for msg in list %}
+      {{#each list}}
         <li>
           <button
               type='button'
@@ -298,130 +299,137 @@
               onclick="setMessage('{{this}}');"
           >{{this}}</button>
         </li>
-      {% endfor %}
+      {{/each}}
     </ul>
   </div>
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- carousel card -> carouselSelect -->
 <script id="carouselSelect-template" type="text/x-handlebars-template">
   <div class='bot'>
     <ul>
-      {% for msg in list %}
-        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
-      {% endfor %}
+      {{#each msg}}
+        <li class='h6 sm'>{{lineBreak textToSpeech}}</li>
+      {{/each}}
     </ul>
     <ul class='carousel-card'>
-      {% for select in carouselSelect %}
+      {{#each carouselSelect}}
         <li class='basic-card'>
-          {% if title %}
-            <h3 class='h6 sm'>{{lineBreak}} {{title}}</h3>
-          {% endif %}
-          {% if this.img %}
+          {{#if title }}
+            <h3 class='h6 sm'>{{lineBreak title}}</h3>
+          {{/if}}
+          {{#if this.img}}
             <div class='img-container'>
               <img src='{{this.img}}' alt='' class='img'/>
             </div>
-          {% endif %}
-          {% if image %}
+          {{/if}}
+          {{#if image}}
             <div class='img-container'>
               <img src='{{image.imageUri}}' alt='{{image.accessibilityText}}' class='img img-fluid mapImg'/>
             </div>
-          {% endif %}
-          {% if subtitle  %}
+          {{/if}}
+          {{#if subtitle }}
             <p class='h6 sm'>{{subtitle}}</p>
-          {% endif %}
-          <p class='p lg'>{{lineBreak}} {{description}}</p>
-          {% if openUrlAction %}
+          {{/if}}
+          <p class='p lg'>{{lineBreak description}}</p>
+          {{#if openUrlAction}}
             <a href="javascript:setMessage('{{title}}');" class='link' target='_blank' tabindex="0">상세 보기</a>
-          {% endif %}
+          {{/if}}
         </li>
-      {% endfor %}
+      {{/each}}
     </ul>
     <p class='time'>{{time}}</p>
   </div>
-  {% if suggestions %}
+  {{#if suggestions}}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
-        {% for suggestion in suggestions.suggestions %}
+        {{#each suggestions.suggestions}}
           <li>
             <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
           </li>
-        {% endfor %}
+        {{/each}}
       </ul>
     </div>
-  {% endif %}
+  {{/if}}
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- Vertex AI Search & Conversation Website Link -->
 <script id="vertex-ai-website-template" type="text/x-handlebars-template">
   <div class='bot no-icon'>
     <ul class='carousel-card'>
-      {% for content in richContent %}
+      {{#each richContent}}
       <li class='basic-card'>
 
-        {% if subtitle  %}
+        {{#if subtitle }}
         <p class='h6 sm'>{{subtitle}}</p>
-        {% endif %}
-        {% if actionLink %}
+        {{/if}}
+        {{#if actionLink}}
         <a href='javascript:setOutLink("{{actionLink}}");' class='link' tabindex="0" title="Workspace 이동">{{title}}</a>
-        {% endif %}
+        {{/if}}
       </li>
-      {% endfor %}
+      {{/each}}
     </ul>
     <p class='time'>{{time}}</p>
   </div>
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- browseCarousel -->
 <script id="browseCarousel-template" type="text/x-handlebars-template">
   <div class='bot'>
     <ul>
-      {% for msg in msgs %}
-        <li class='h6 sm'>{{lineBreak}} {{textToSpeech}}</li>
-      {% endfor %}
+      {{#each msg}}
+        <li class='h6 sm'>{{lineBreak textToSpeech}}</li>
+      {{/each}}
     </ul>
     <ul class='carousel-card'>
-      {% for content in browseCarousel %}
+      {{#each browseCarousel}}
         <li class='basic-card'>
-          {% if title  %}
-            <h3 class='h6 sm'>{{lineBreak}} {{title}}</h3>
-          {% endif %}
-          {% if this.img %}
+          {{#if title }}
+            <h3 class='h6 sm'>{{lineBreak title}}</h3>
+          {{/if}}
+          {{#if this.img}}
             <div class='img-container'>
               <img src='{{this.img}}' alt='' class='img'/>
             </div>
-          {% endif %}
-          {% if image %}
+          {{/if}}
+          {{#if image}}
             <div class='img-container'>
               <img src='{{image.imageUri}}' alt='{{image.accessibilityText}}' class='img img-fluid mapImg'/>
             </div>
-          {% endif %}
-          {% if subtitle  %}
+          {{/if}}
+          {{#if subtitle }}
             <p class='h6 sm'>{{subtitle}}</p>
-          {% endif %}
-          <p class='p lg'>{{lineBreak}} {{description}}</p>
-          {% if openUrlAction %}
+          {{/if}}
+          <p class='p lg'>{{lineBreak description}}</p>
+          {{#if openUrlAction}}
             <a href='javascript:setOutLink("{{openUrlAction.url}}");' class='link' tabindex="0" title="새 창 열림">상세 보기</a>
-          {% endif %}
+          {{/if}}
         </li>
-      {% endfor %}
+      {{/each}}
     </ul>
     <p class='time'>{{time}}</p>
   </div>
-  {% if suggestions %}
+  {{#if suggestions}}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
-        {% for content in suggestions.suggestions %}
+        {{#each suggestions.suggestions}}
           <li>
             <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
           </li>
-        {% endfor %}
+        {{/each}}
       </ul>
     </div>
-  {% endif %}
+  {{/if}}
 </script>
+{% endraw %}
 
-
+{% raw %}
 <!-- match engine -->
 <script id="match-engine-template" type="text/x-handlebars-template">
   <div class='bot'>
@@ -430,50 +438,52 @@
       <span class="text">Generative AI</span>
     </div>
     <ul>
-      {% for msg in list %}
-        <li class='h6 sm gen-ai' id="{{simpleId}}">
-          {{lineBreak}} {{textToSpeech}}
+      {{#each msg}}
+        <li class='h6 sm gen-ai' id="{{../simpleId}}">
+          {{lineBreak textToSpeech}}
         </li>
-      {% endfor %}
+      {{/each}}
     </ul>
     <ul class='carousel-card'>
-      {% for content in browseCarousel %}
+      {{#each browseCarousel}}
       <li class='basic-card'>
-        {% if title  %}
-        <h3 class='h6 sm' style='background: url({% if image.imageUri %}{{image.imageUri}}{% else %}/assets/image/file-svgrepo-com.svg{% endif %}) no-repeat -3px 3px;'>{{lineBreak}} {{title}}</h3>
-        {% endif %}
-        {% if subtitle %}
+        {{#if title }}
+        <h3 class='h6 sm' style='background: url({{#if image.imageUri}}{{image.imageUri}}{{else}}/assets/image/file-svgrepo-com.svg{{/if}}) no-repeat -3px 3px;'>{{lineBreak title}}</h3>
+        {{/if}}
+        {{#if subtitle }}
         <p class='h6 sm'>{{subtitle}}</p>
-        {% endif %}
-        <p class='p lg'>{{lineBreak}} {{description}}</p>
-        {% if openUrlAction %}
+        {{/if}}
+        <p class='p lg'>{{lineBreak description}}</p>
+        {{#if openUrlAction}}
         <a href='javascript:interactWorkspace("{{openUrlAction.url}}");' class='link' tabindex="0" title="Workspace 이동">open file</a>
-        {% endif %}
+        {{/if}}
       </li>
-      {% endfor %}
+      {{/each}}
     </ul>
     <p class='time'>{{time}}</p>
   </div>
-  {% if suggestions %}
+  {{#if suggestions}}
   <div class='list-unstyled suggestion'>
     <ul class='list-unstyled suggestion-list'>
-      {% for content in suggestions.suggestions %}
+      {{#each suggestions.suggestions}}
       <li>
         <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
       </li>
-      {% endfor %}
+      {{/each}}
     </ul>
   </div>
-  {% endif %}
+  {{/if}}
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- medlm intro -->
 <script id="medlmIntro-template" type="text/x-handlebars-template">
   <div class='bot'>
     <ul>
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='{{contextPath}}/assets/img/med_lm/intro1.png' alt='intro1.png' class='img img-fluid mapImg'/>
+          <img src='/assets/img/med_lm/intro1.png' alt='intro1.png' class='img img-fluid mapImg'/>
         </div>
         <p class='h6 sm'>
           Med-PaLM 2 has been carefully aligned to the medical domain via:
@@ -487,7 +497,7 @@
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='{{contextPath}}/assets/img/med_lm/intro2.png' alt='intro2.png' class='img img-fluid mapImg'/>
+          <img src='/assets/img/med_lm/intro2.png' alt='intro2.png' class='img img-fluid mapImg'/>
         </div>
         <p class='p lg'>● Med-PaLM 2 is the first AI system to obtain expert doctor score on USMLE<br/>
           ● Our model, Med-PaLM 2, reaches 85%+ accuracy on par with expert test takers and an almost 18% leap over Med-PaLM<br/>
@@ -497,14 +507,14 @@
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='{{contextPath}}/assets/img/med_lm/intro3.png' alt='intro3.png' class='img img-fluid mapImg'/>
+          <img src='/assets/img/med_lm/intro3.png' alt='intro3.png' class='img img-fluid mapImg'/>
         </div>
         <p class='p lg'>More useful and avoid Risks with MedLM decision supports</p>
       </li>
 
       <li class='basic-card'>
         <div class='img-container'>
-          <img src='{{contextPath}}/assets/img/med_lm/intro4.png' alt='intro4.png' class='img img-fluid mapImg'/>
+          <img src='/assets/img/med_lm/intro4.png' alt='intro4.png' class='img img-fluid mapImg'/>
         </div>
         <p class='h6 sm'>
           Suggested applications for exploration include, but are not limited to:
@@ -523,7 +533,9 @@
     </ul>
   </div>
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- chart 영역 -->
 <script id="chart-template" type="text/x-handlebars-template">
   <div class='bot no-icon'>
@@ -533,7 +545,9 @@
     </div>
   </div>
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- 말풍선 깜빡임 -->
 <script id="ready-template" type="text/x-handlebars-template">
   <div class='bot dv-ready'>
@@ -546,7 +560,9 @@
     </ul>
   </div>
 </script>
+{% endraw %}
 
+{% raw %}
 <!-- 오류 메시지 -->
 <!-- Error Message -->
 <script id="error-template" type="text/x-handlebars-template">
@@ -556,21 +572,69 @@
     <button type='button' class='btnChatStart' onclick='window.location.reload()'>Restart</button>
   </div>
 </script>
+{% endraw %}
 
-<script id="popup-alert-template" type="text/x-handlebars-template">
+{% raw %}
+<script id="popup-login-template" type="text/x-handlebars-template">
   <div id="layerPopupWrap">
     <div class="layerPopup alertPopup">
-      {% if title %}
+      {{#if title}}
         <div class="top">
           <h1>{{title}}</h1>
         </div>
-      {% endif %}
+      {{/if}}
       <div class="cont">
-        {% if description %}
+        {{#if description}}
+        <div class="contBox">
+          <h2>Login</h2>
+          <form name="loginForm">
+          <table cellspacing="0" cellpadding="0" style="border: none;">
+            <tbody>
+              <tr>
+                <td style="text-align: right;"><label for="inputEmail" style="text-align: right;">Email</label></td>
+                <td><input type="text" name="inputEmail" id="inputEmail"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;"><label for="inputPass" style="text-align: right;">Password</label></td>
+                <td><input type="password" name="inputPass" id="inputPass"></td>
+              </tr>
+            </tbody>
+          </table>
+          </form>
+        </div>
+        {{/if}}
+        <div style="text-align: center; color: red;"><span id="loginError"></span></div>
+        <div class="btnListBox">
+          <ul class="btnListUl">
+            <li>
+              <button type="button" onclick="closeLoginPopup();">Submit</button>
+            </li>
+          </ul>
+        </div>
+        <div style="text-align: right;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSejiwal5BhnmcKe1HqC8XrX-ZgXhw9Uipu2e8r_sXX1UVnh_Q/viewform?vc=0&amp;c=0&amp;w=1&amp;flr=0&amp;resourcekey=0-O-wYzZOboih1UeDSFvp0VA" style="text-decoration: underline; color: blue; "> Register </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+{% endraw %}
+
+{% raw %}
+<script id="popup-alert-template" type="text/x-handlebars-template">
+  <div id="layerPopupWrap">
+    <div class="layerPopup alertPopup">
+      {{#if title}}
+        <div class="top">
+          <h1>{{title}}</h1>
+        </div>
+      {{/if}}
+      <div class="cont">
+        {{#if description}}
           <div class="contBox">
             <h2>{{description}}</h2>
           </div>
-        {% endif %}
+        {{/if}}
         <div class="btnListBox">
           <ul class="btnListUl">
             <li>
@@ -582,5 +646,6 @@
     </div>
   </div>
 </script>
+{% endraw %}
 </body>
 </html>
