@@ -96,7 +96,7 @@
     <ul class="d-flex wrap">
       <li tabindex="0">
 {% if corpCd == 'VertexAI' %}
-          <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="MedLM Assistant Guide">
+          <button type="button" id="btnChatbotGuide" class="btn btn1" tabindex="-1" data-text="GenAI Assistant Guide">
             Generative AI Assistant Guide
           </button>
 {% else %}
@@ -283,6 +283,17 @@
     </ul>
     <p class='time'>{{time}}</p>
   </div>
+  {{#if suggestions}}
+    <div class='list-unstyled suggestion'>
+      <ul class='list-unstyled suggestion-list'>
+        {{#each suggestions}}
+          <li>
+            <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
 </script>
 {% endraw %}
 
@@ -408,7 +419,7 @@
           {{/if}}
           <p class='p lg'>{{lineBreak description}}</p>
           {{#if openUrlAction}}
-            <a href='javascript:setOutLink("{{openUrlAction.url}}");' class='link' tabindex="0" title="새 창 열림">상세 보기</a>
+            <a href='javascript:setOutLink("{{openUrlAction.url}}");' class='link' tabindex="0" title="새 창 열림">{{footer}}</a>
           {{/if}}
         </li>
       {{/each}}
@@ -418,7 +429,7 @@
   {{#if suggestions}}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
-        {{#each suggestions.suggestions}}
+        {{#each suggestions}}
           <li>
             <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
           </li>
