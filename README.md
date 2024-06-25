@@ -1,16 +1,4 @@
 
-PROJECT_ID=tpcg-datacollector
-REGION=asia-northeast3
-APP=chat
-TAG=gcr.io/$PROJECT_ID/$APP
-
-gcloud builds submit --project=$PROJECT_ID --tag $TAG
-cloud run deploy $APP \
---project $PROJECT_ID \
---image $TAG \
---platform managed \
---region $REGION \
---allow-unauthenticated
 
 uvicorn main:app --host 0.0.0.0 --port 8080
 
@@ -31,3 +19,19 @@ git status
 git add routers/chatbot.py README.md routers/dummy.py
 git commit -m "dummy.py 파일 추가"
 git push -u tpcg master
+
+PROJECT_ID=tpcg-datacollector
+REGION=asia-northeast3
+APP=chat
+TAG=gcr.io/$PROJECT_ID/$APP
+
+gcloud builds submit --project=$PROJECT_ID --tag $TAG
+
+gcloud run deploy $APP \
+--project $PROJECT_ID \
+--image $TAG \
+--platform managed \
+--region $REGION \
+--allow-unauthenticated
+
+https://chat-phdovlv6aa-du.a.run.app/main

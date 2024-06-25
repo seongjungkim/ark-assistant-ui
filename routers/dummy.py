@@ -134,7 +134,7 @@ basic_card_json = {
             },
             "buttons": [
                 {
-                    "title": "Button Title",
+                    "title": "Rich Response > Basic Card",
                     "openUriAction": {
                         "uri": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#basic_card"
                     }

@@ -47,7 +47,7 @@ async def init(request: Request, req: schemas.QueryRequest):
     elif req.query == 'GenAI Assistant Guide':
         response = dummy.assistant_guide_json
     elif req.query == 'test':
-        response = dummy.test
+        response = dummy.test_json
     elif req.query == 'basic card':
         response = dummy.basic_card_json
     elif req.query == 'browse carousel':
