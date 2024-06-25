@@ -40,6 +40,11 @@ async def init(request: Request, req: schemas.QueryRequest):
     print(req)
     
     if req.query == 'welcome':
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/SimpleResponse.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/SimpleResponseSsml.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/SimpleResponseSsml.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/SimpleResponseTts.json
+
         response = {
         "id": "d052d79c458d4769a452756f2edaa6ca",
         "result": {
@@ -105,6 +110,199 @@ async def init(request: Request, req: schemas.QueryRequest):
                             "displayText": " As a medical chatbot, I am designed to provide information and answer questions related to medical topics. If you have a specific medical question or concern, I can try to help you find the information you need."
                         }
                     ]
+                }
+            },
+            "status": {
+                "code": 200
+            },
+            "genAi": True,
+            "eventTags": []
+        }
+    elif req.query == 'basic card':
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/BasicCard.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/Suggestions.json
+        # https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BasicCardSamples
+
+        response = {
+            "result": {
+                "source": "dialogflow",
+                "score": 0.0,
+                "simpleResponses": {
+                    "simpleResponses": [
+                        {
+                            "textToSpeech": "기본 카드는 주로 디스플레이용으로 사용합니다. 간결하고 사용자에게 핵심 (또는 요약) 정보를 제시하며 개발자가 선택할 경우 사용자가 자세히 알아볼 수 있도록 설계되었습니다 (웹링크 사용).",
+                            "ssml": "",
+                            "displayText": "기본 카드는 주로 디스플레이용으로 사용합니다. 간결하고 사용자에게 핵심 (또는 요약) 정보를 제시하며 개발자가 선택할 경우 사용자가 자세히 알아볼 수 있도록 설계되었습니다 (웹링크 사용)."
+                        }
+                    ]
+                },
+                "basicCard": {
+                    "title": "베이직카드 타이틀",
+                    "subtitle": "베이직카드 서브타이틀",
+                    "formattedText": "This is a basic card.  Text in a basic card can include \"quotes\" and\n    most other unicode characters including emojis.  Basic cards also support\n    some markdown formatting like *emphasis* or _italics_, **strong** or\n    __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other\n    things like line  \nbreaks",
+                    "image": {
+                        "imageUri": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                        "accessibilityText": "Google Logo"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Button Title",
+                            "openUriAction": {
+                                "uri": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#basic_card"
+                            }
+                        }
+                    ]
+                },
+                "suggestions": [
+                    {
+                        "title": "25"
+                    },
+                    {
+                        "title": "45"
+                    },
+                    {
+                        "title": "Never mind"
+                    }
+                ],
+                "linkOutSuggestion": {
+                    "destinationName": "Website",
+                    "url": "https://assistant.google.com"
+                }
+            },
+            "status": {
+                "code": 200
+            },
+            "genAi": True,
+            "eventTags": []
+        }
+    elif req.query == 'browse carousel':
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/BrowseCarousel.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/Suggestions.json
+        # https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples
+
+        response = {
+            "result": {
+                "source": "dialogflow",
+                "score": 0.0,
+                "simpleResponses": {
+                    "simpleResponses": [
+                        {
+                            "textToSpeech": "탐색 캐러셀은 사용자가 세로로 스크롤하고 컬렉션의 타일을 선택할 수 있는 리치 응답입니다. 탐색 캐러셀은 웹브라우저 (또는 모든 타일이 AMP를 지원하는 경우 AMP 브라우저)에서 선택한 타일을 열어 웹 콘텐츠용으로 특별히 설계되었습니다. 탐색 캐러셀은 나중에 찾아볼 수 있도록 사용자의 어시스턴트 표시 경로에도 유지됩니다.",
+                            "ssml": "",
+                            "displayText": "탐색 캐러셀은 사용자가 세로로 스크롤하고 컬렉션의 타일을 선택할 수 있는 리치 응답입니다. 탐색 캐러셀은 웹브라우저 (또는 모든 타일이 AMP를 지원하는 경우 AMP 브라우저)에서 선택한 타일을 열어 웹 콘텐츠용으로 특별히 설계되었습니다. 탐색 캐러셀은 나중에 찾아볼 수 있도록 사용자의 어시스턴트 표시 경로에도 유지됩니다."
+                        }
+                    ]
+                },
+                "browseCarousel": {
+                    "items": [
+                        {
+                            "title": "케라셀 타이틀1",
+                            "openUrlAction": {
+                                "url": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples"
+                            },
+                            "description": "Description of item 1",
+                            "footer": "Item 1 footer",
+                            "image": {
+                                "imageUri": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                                "accessibilityText": "Google Logo"
+                            }
+                        },
+                        {
+                            "title": "케라셀 타이틀2",
+                            "openUrlAction": {
+                                "url": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples"
+                            },
+                            "description": "Description of item 2",
+                            "footer": "Item 2 footer",
+                            "image": {
+                                "imageUri": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                                "accessibilityText": "Google Logo"
+                            }
+                        }
+                    ]
+                },
+                "suggestions": [
+                    {
+                        "title": "25"
+                    },
+                    {
+                        "title": "45"
+                    },
+                    {
+                        "title": "Never mind"
+                    }
+                ],
+                "linkOutSuggestion": {
+                    "destinationName": "Website",
+                    "url": "https://assistant.google.com"
+                }
+            },
+            "status": {
+                "code": 200
+            },
+            "genAi": True,
+            "eventTags": []
+        }
+    elif req.query == 'carousel select':
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/BrowseCarousel.json
+        # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/Suggestions.json
+        # https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples
+
+        response = {
+            "result": {
+                "source": "dialogflow",
+                "score": 0.0,
+                "simpleResponses": {
+                    "simpleResponses": [
+                        {
+                            "textToSpeech": "탐색 캐러셀은 사용자가 세로로 스크롤하고 컬렉션의 타일을 선택할 수 있는 리치 응답입니다. 탐색 캐러셀은 웹브라우저 (또는 모든 타일이 AMP를 지원하는 경우 AMP 브라우저)에서 선택한 타일을 열어 웹 콘텐츠용으로 특별히 설계되었습니다. 탐색 캐러셀은 나중에 찾아볼 수 있도록 사용자의 어시스턴트 표시 경로에도 유지됩니다.",
+                            "ssml": "",
+                            "displayText": "탐색 캐러셀은 사용자가 세로로 스크롤하고 컬렉션의 타일을 선택할 수 있는 리치 응답입니다. 탐색 캐러셀은 웹브라우저 (또는 모든 타일이 AMP를 지원하는 경우 AMP 브라우저)에서 선택한 타일을 열어 웹 콘텐츠용으로 특별히 설계되었습니다. 탐색 캐러셀은 나중에 찾아볼 수 있도록 사용자의 어시스턴트 표시 경로에도 유지됩니다."
+                        }
+                    ]
+                },
+                "carouselSelect": {
+                    "items": [
+                        {
+                            "title": "케라셀 타이틀1",
+                            "openUrlAction": {
+                                "url": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples"
+                            },
+                            "description": "Description of item 1",
+                            "footer": "Item 1 footer",
+                            "image": {
+                                "imageUri": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                                "accessibilityText": "Google Logo"
+                            }
+                        },
+                        {
+                            "title": "케라셀 타이틀2",
+                            "openUrlAction": {
+                                "url": "https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BrowsingCarouselSamples"
+                            },
+                            "description": "Description of item 2",
+                            "footer": "Item 2 footer",
+                            "image": {
+                                "imageUri": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+                                "accessibilityText": "Google Logo"
+                            }
+                        }
+                    ]
+                },
+                "suggestions": [
+                    {
+                        "title": "25"
+                    },
+                    {
+                        "title": "45"
+                    },
+                    {
+                        "title": "Never mind"
+                    }
+                ],
+                "linkOutSuggestion": {
+                    "destinationName": "Website",
+                    "url": "https://assistant.google.com"
                 }
             },
             "status": {
