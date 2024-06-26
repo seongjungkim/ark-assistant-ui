@@ -48,6 +48,8 @@ async def init(request: Request, req: schemas.QueryRequest):
         response = dummy.assistant_guide_json
     elif req.query == 'test':
         response = dummy.test_json
+    elif req.query == 'simple response':
+        response = dummy.simple_response_json
     elif req.query == 'basic card':
         response = dummy.basic_card_json
     elif req.query == 'browse carousel':

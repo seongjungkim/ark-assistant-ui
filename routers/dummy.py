@@ -107,6 +107,43 @@ test_json = {
     "eventTags": []
 }
 
+# https://developers.google.com/assistant/df-asdk/simple-responses?hl=ko
+
+simple_response_json = {
+    "result": {
+        "source": "dialogflow",
+        "score": 0.0,
+        "simpleResponses": {
+            "simpleResponses": [
+                {
+                    "textToSpeech": "간단한 응답은 채팅 풍선의 형태를 취하며 소리에 텍스트 음성 변환(TTS) 또는 음성 합성 마크업 언어 (SSML)를 사용합니다.\r\n\r\nTTS 텍스트는 기본적으로 채팅 풍선 콘텐츠로 사용됩니다. 텍스트의 시각적 측면이 필요에 맞는 경우 채팅 풍선의 표시 텍스트를 지정할 필요가 없습니다.\r\n\r\n대화 디자인 가이드라인을 검토하여 이러한 시각적 요소를 작업에 통합하는 방법을 알아볼 수도 있습니다.",
+                    "ssml": "",
+                    "displayText": " 간단한 응답은 채팅 풍선의 형태를 취하며 소리에 텍스트 음성 변환(TTS) 또는 음성 합성 마크업 언어 (SSML)를 사용합니다.\r\n\r\nTTS 텍스트는 기본적으로 채팅 풍선 콘텐츠로 사용됩니다. 텍스트의 시각적 측면이 필요에 맞는 경우 채팅 풍선의 표시 텍스트를 지정할 필요가 없습니다.\r\n\r\n대화 디자인 가이드라인을 검토하여 이러한 시각적 요소를 작업에 통합하는 방법을 알아볼 수도 있습니다."
+                }
+            ]
+        },
+        "suggestions": [
+            {
+                "title": "simple response"
+            },
+            {
+                "title": "browse carousel"
+            },
+            {
+                "title": "basic card"
+            },
+            {
+                "title": "Never mind"
+            }
+        ]
+    },
+    "status": {
+        "code": 200
+    },
+    "genAi": True,
+    "eventTags": []
+}
+
 # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/BasicCard.json
 # https://github.com/dialogflow/fulfillment-webhook-json/blob/master/responses/v2/ActionsOnGoogle/RichResponses/Suggestions.json
 # https://developers.google.com/assistant/df-asdk/rich-responses?hl=ko#BasicCardSamples

@@ -234,7 +234,7 @@
   {{#if suggestions}}
     <div class='list-unstyled suggestion'>
       <ul class='list-unstyled suggestion-list'>
-        {{#each suggestions.suggestions}}
+        {{#each suggestions}}
           <li>
             <button type='button' class='btn' onclick="setMessage('{{this.title}}');">{{this.title}}</button>
           </li>

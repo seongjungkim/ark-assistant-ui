@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r  requirements.txt
 ENV APP_HOME /root
 WORKDIR $APP_HOME
 COPY main.py $APP_HOME
-COPY /app $APP_HOME/app
+#COPY /app $APP_HOME/app
 COPY /core $APP_HOME/core
 COPY /routers $APP_HOME/routers
 COPY /static $APP_HOME/static
