@@ -1,3 +1,18 @@
+#realboxContainer {
+    display: inherit;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+#lensUploadDialog {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 561px;
+    z-index: 101;
+}
+
 #dialog {
     background: #ffffffff;
     border-radius: 22px;
