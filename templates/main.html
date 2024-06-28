@@ -2,7 +2,7 @@
 {% set theme = 'theme1' %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class lazy-loaded="true">
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -128,7 +128,8 @@
   </div>
   <button type="button" class="btn-mic" id="microphone" style="display: none;">Mic</button>
   <button type="button" class="btn-zendesk-upload" id="zendeskupload"  style="display: none;" onclick="sunco.showUploadPopup()">File</button>
-  <button type="button" class="btn-submit" id="btnSend" aria-readonly="true">Send</button>
+  <button type="button" class="btn-camera" id="btnCamera" aria-readonly="true"></button>
+  <button type="button" class="btn-submit" id="btnSend" aria-readonly="true"></button>
 </form>
 
 <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -176,7 +177,6 @@
 <!-- 이미지 레이어팝업 제공 -->
 <section id="layerPopupContainer"></section>
 
-<div id="realboxContainer">
 <div id="lensUploadDialog">
 <div id="dialog" tabindex="-1" lang="ko" role="dialog" aria-modal="true">
   <ntp-lens-form id="lensForm"></ntp-lens-form>
@@ -219,7 +219,6 @@
       </dom-if>
     </div>
   </div>
-</div>
 </div>
 </div>
 
