@@ -176,6 +176,49 @@
 <!-- 이미지 레이어팝업 제공 -->
 <section id="layerPopupContainer"></section>
 
+<div id="dialog" tabindex="-1" lang="ko" role="dialog" aria-modal="true">
+  <ntp-lens-form id="lensForm"></ntp-lens-form>
+  <div id="container">
+    <cr-icon-button id="closeButton" class="icon-clear" title="닫기" role="button" tabindex="0" aria-disabled="false"></cr-icon-button>
+    <div id="title">이미지 검색</div>
+    <div id="dragDropArea">
+      <dom-if style="display: none;">
+        <template is="dom-if"></template>
+      </dom-if>
+      <div class="drag-drop-title-container">
+        <div id="dragDropIllustration"></div>
+        <div class="drag-drop-title">
+          <span id="dragText">여기로 이미지를 드래그하거나</span>
+          <span tabindex="0" role="button" id="uploadText">파일을 업로드하세요</span>
+        </div>
+      </div>
+      <div id="urlUploadContainer">
+        <div id="sectionDivider">
+          <div class="divider-line"></div>
+          <div id="orLabel">또는</div>
+          <div class="divider-line"></div>
+        </div>
+        <div id="inputContainer">
+          <input id="inputBox" autocomplete="false" autocorrect="false" placeholder="이미지 링크 붙여넣기" text="text">
+          <div id="inputSubmit" tabindex="0" role="button">검색</div>
+        </div>
+      </div>
+      <dom-if style="display: none;">
+        <template is="dom-if"></template>
+      </dom-if>
+      <dom-if style="display: none;">
+        <template is="dom-if"></template>
+      </dom-if>
+      <dom-if style="display: none;">
+        <template is="dom-if"></template>
+      </dom-if>
+      <dom-if style="display: none;">
+        <template is="dom-if"></template>
+      </dom-if>
+    </div>
+  </div>
+</div>
+
 {% raw %}
 <!-- 사용자가 쓴 채팅 -->
 <script id="me-template" type="text/x-handlebars-template">

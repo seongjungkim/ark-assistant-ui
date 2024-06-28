@@ -1,0 +1,111 @@
+#dialog {
+    background: #ffffffff;
+    border-radius: 22px;
+    box-shadow: color-mix(in srgb, var(--cr-shadow-color) 30%, transparent) 0 1px 3px 0, color-mix(in srgb, var(--cr-shadow-color) 15%, transparent) 0 4px 8px 3px;
+    box-sizing: border-box;
+    left: unset;
+    padding: 20px;
+    position: relative;
+    right: unset;
+}
+
+#urlUploadContainer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#dragDropArea {
+    background: rgb(248, 249, 250);
+    border: 1px dashed rgb(189, 193, 198);
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+}
+
+#dragDropIllustration {
+    background: url(../img/theme1/drag_drop_illustration.svg) no-repeat center;
+    display: inline-flex;
+    height: 45px;
+    margin-inline-end: 18px;
+    vertical-align: middle;
+    width: 59px;
+}
+
+.drag-drop-title {
+    color: #3c4043ff;
+    font-size: 16px;
+    line-height: 25px;
+    max-width: 300px;
+}
+
+#uploadText {
+    color: rgb( 25,103,210 );
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#dragText {
+    display: inline-block;
+    margin-inline-end: 4px;
+}
+
+.divider-line {
+    border-top: 1px solid rgb( 232,234,237 );
+    flex-grow: 1;
+    height: 0;
+}
+
+#orLabel {
+    color: #3c4043ff;
+    cursor: default;
+    flex-shrink: 0;
+    font-size: 14px;
+    margin-inline-end: 20px;
+    margin-inline-start: 20px;
+}
+
+.divider-line {
+    border-top: 1px solid rgb( 232,234,237 );
+    flex-grow: 1;
+    height: 0;
+}
+
+#inputContainer {
+    display: flex;
+    margin-top: 14px;
+}
+
+#inputBox {
+    background: #ffffffff;
+    border: 1px solid rgb( 218,220,224 );
+    border-radius: 36px;
+    color: rgb( 60,64,67 );
+    display: inline-flex;
+    flex-grow: 1;
+    font-size: 14px;
+    height: 40px;
+    outline: 0;
+    padding: 0 24px;
+    width: 100%;
+}
+
+#inputSubmit {
+    align-items: center;
+    background: #ffffffff;
+    border: 1px solid, rgb( 218,220,224 );
+    color: rgb( 26,115,232 );
+    border-radius: 32px;
+    display: inline-flex;
+    padding: 8px 24px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
