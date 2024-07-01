@@ -1,6 +1,7 @@
 'use strict';
 
 import * as Common from './common.js'
+import * as Dragndrop from './dragdrop.js'
 import webChatHan from './webChatHan.js'
 
 let counter = 0;

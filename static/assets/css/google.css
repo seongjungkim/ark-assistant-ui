@@ -5,12 +5,14 @@
 }
 
 #lensUploadDialog {
-    left: 0;
+    left: 50%;
+    top: 50%;
     position: absolute;
     right: 0;
-    top: 0;
     width: 561px;
     z-index: 101;
+    transform: translate(-50%, -50%);
+    display: none;
 }
 
 #dialog {
@@ -22,6 +24,28 @@
     padding: 20px;
     position: relative;
     right: unset;
+}
+
+#closeButton {
+    background: url('../img/theme1/icon_clear.svg');
+    cursor: pointer;
+    display: flex;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+#maskedImage {
+    mask-image: url('../img/theme1/icon_clear.svg');
+}
+
+#title {
+    color: rgb(60, 64, 67);
+    font-size: 16px;
+    letter-spacing: .1px;
+    line-height: 28px;
+    margin-bottom: 14px;
+    text-align: center;
 }
 
 #urlUploadContainer {

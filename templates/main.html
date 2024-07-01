@@ -177,16 +177,54 @@
 <!-- 이미지 레이어팝업 제공 -->
 <section id="layerPopupContainer"></section>
 
+<script>
+function onDragEnter_(e) {
+    alert('onDragEnter_(e)');
+    e.preventDefault();
+    this.dragCount += 1;
+    if (this.dragCount === 1) {
+        this.dialogState_ = DialogState.DRAGGING
+    }
+}
+function onDragOver_(e) {
+    alert('onDragOver_(e)');
+    e.preventDefault()
+}
+
+function onDragLeave_(e) {
+    alert('onDragLeave_(e)');
+    e.preventDefault();
+    this.dragCount -= 1;
+    if (this.dragCount === 0) {
+        this.dialogState_ = DialogState.NORMAL
+    }
+}
+function onDrop_(e) {
+    alert('onDrop_(e)');
+    e.preventDefault();
+    this.dragCount = 0;
+    if (e.dataTransfer) {
+        this.$.lensForm.submitFileList(e.dataTransfer.files);
+        recordLensUploadDialogAction(LensUploadDialogAction.IMAGE_DROPPED)
+    }
+}
+</script>
+
 <div id="lensUploadDialog">
 <div id="dialog" tabindex="-1" lang="ko" role="dialog" aria-modal="true">
   <ntp-lens-form id="lensForm"></ntp-lens-form>
   <div id="container">
-    <cr-icon-button id="closeButton" class="icon-clear" title="닫기" role="button" tabindex="0" aria-disabled="false"></cr-icon-button>
+    <cr-icon-button id="closeButton" class="icon-clear" title="닫기" role="button" tabindex="0" aria-disabled="false">
+      <div id="icon">
+        <div id="maskedImage"></div>
+      </div>
+    </cr-icon-button>
     <div id="title">이미지 검색</div>
-    <div id="dragDropArea">
+    <div id="dragDropArea" ondragenter="onDragEnter_(e)" ondragover="onDragOver_(e)" ondragleave="onDragLeave_(e)" ondrop="onDrop_(e)">
       <dom-if style="display: none;">
         <template is="dom-if"></template>
       </dom-if>
+      <input type="file" id="image-file" name="image-file" />
       <div class="drag-drop-title-container">
         <div id="dragDropIllustration"></div>
         <div class="drag-drop-title">
@@ -222,6 +260,38 @@
 </div>
 </div>
 
+<script>
+  $('#image-file').on('click touchstart' , function(){
+      $(this).val('');
+  });
+
+  //Trigger now when you have selected any file 
+  $("#image-file").change(function(e){
+      const file = e.target.files[0];
+      console.log(file.name)
+      var formData = new FormData();
+
+      formData.append('file', file);
+
+      $.ajax ({
+        url: '/uploadFile',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'POST',
+        success: function(result) {
+          alert('Uploaded');
+        },
+        error: function(xhr, settings, thrown) {
+          alert(thrown);
+        },
+        complete: function() {
+          //
+        }
+      })
+  });
+  </script>
+  
 {% raw %}
 <!-- 사용자가 쓴 채팅 -->
 <script id="me-template" type="text/x-handlebars-template">
