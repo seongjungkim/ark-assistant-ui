@@ -6,6 +6,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta property="og:url" content="https://storage.googleapis.com/rubicon-data/" />
   <meta
       id="viewport"
       name="viewport"
@@ -123,7 +124,7 @@
 
 <!-- 사용자 입력 폼 -->
 <form action="" class="chat-input">
-  <div class="input-container">
+  <div class="input-container" id="input-container">
     <input type="text" id="chatTextArea" class="input" placeholder="Enter your question." aria-label="Chat input"/>
   </div>
   <button type="button" class="btn-mic" id="microphone" style="display: none;">Mic</button>
@@ -131,6 +132,104 @@
   <button type="button" class="btn-camera" id="btnCamera" aria-readonly="true"></button>
   <button type="button" class="btn-submit" id="btnSend" aria-readonly="true"></button>
 </form>
+
+<script>
+const pickerOpts = {
+  types: [
+    {
+      description: "Images",
+      accept: {
+        "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+      },
+    },
+  ],
+  excludeAcceptAllOption: true,
+  multiple: false,
+};
+/*
+$('#btnCamera').on('click touchstart' , function(){
+  console.log('click')
+  const elem = document.getElementById("lensUploadDialog");
+  elem.style.display = "block";
+})
+*/
+/* */
+$('#btnCamera').on('click touchstart' , async function(){
+  //getFile();
+  
+  [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+  console.log('file:' + fileHandle.name);
+  let file = await fileHandle.getFile();
+
+  var formData = new FormData();
+
+  formData.append('file', file);
+
+  $.ajax ({
+    url: '/uploadFile',
+    processData: false,
+    contentType: false,
+    data: formData,
+    type: 'POST',
+    success: function(result) {
+      console.log('result' + " " + result);
+      filename = "";
+      if (result && result.filename) {
+        filename = "https://storage.googleapis.com/" + result.bucket + "/" + result.thumbnail2
+      }
+      const elem = $('.chat-input');
+      console.log('Uploaded' + " " + filename);
+      elem.css("height", "120px");
+      let source = $('#image-template').html();
+      //console.log('image-template source: ' + source);
+      let template = Handlebars.compile(source);
+      //console.log('image-template template: ' + template);
+      let AttachData = {
+        filename: filename,
+      };
+      let html = template(AttachData);
+      //console.log('html: ' + html);
+      $('#input-container').append(html);
+    },
+    error: function(xhr, settings, thrown) {
+      alert(thrown);
+    },
+    complete: function() {
+      //
+    }
+  })
+});
+/* */
+/*
+let fileHandle;
+async function getFile() {
+  [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+  console.log('file:' + fileHandle.name);
+  let file = await fileHandle.getFile();
+
+  var formData = new FormData();
+
+      formData.append('file', file);
+
+      $.ajax ({
+        url: '/uploadFile',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'POST',
+        success: function(result) {
+          alert('Uploaded');
+        },
+        error: function(xhr, settings, thrown) {
+          alert(thrown);
+        },
+        complete: function() {
+          //
+        }
+      })
+}
+*/
+</script>
 
 <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="pswp__bg"></div>
@@ -281,6 +380,17 @@ function onDrop_(e) {
         type: 'POST',
         success: function(result) {
           alert('Uploaded');
+          let source = $('#image-template').html();
+          console.log('image-template source: ' + source);
+          let template = Handlebars.compile(source);
+          console.log('image-template template: ' + template);
+          let AttachData = {
+            msg: text,
+            time: new Handlebars.SafeString(getTime()),
+          };
+          let html = template(AttachData);
+          console.log('html: ' + html);
+          $('#input-container').append(html);
         },
         error: function(xhr, settings, thrown) {
           alert(thrown);
@@ -291,7 +401,47 @@ function onDrop_(e) {
       })
   });
   </script>
-  
+
+{% raw %}
+<!-- 사용자가 쓴 채팅 -->
+<script id="image-template" type="text/x-handlebars-template">
+  <div _ngcontent-ng-c2446868593="" class="uploader-file-preview-wrapper ng-tns-c2446868593-2 ng-star-inserted">
+    <uploader-file-preview _ngcontent-ng-c2446868593="" class="file-preview-chip ng-tns-c2446868593-2 ng-star-inserted" _nghost-ng-c972899123="" style="">
+      <div _ngcontent-ng-c972899123="" class="mat-mdc-tooltip-trigger file-preview-container" aria-describedby="cdk-describedby-message-ng-1-18" cdk-describedby-host="ng-1">
+        <!---->
+        <div _ngcontent-ng-c972899123="" class="image-preview ng-star-inserted" jslog="214055;track:impression;BardVeMetadataKey:[null,null,null,null,null,null,null,null,null,null,null,null,null,[13]]">
+          <img _ngcontent-ng-c972899123="" aria-label="Image preview" data-test-id="image-preview" src="{{filename}}">
+          <button _ngcontent-ng-c972899123="" data-test-id="cancel-button" class="cancel-button ng-star-inserted" aria-label="Remove file samsung-sec-smartphones-galaxy-s24-ultra-s928-SM-S928NZTNKOO-2024-06-17-09_10_38.png" jslog="188891;track:generic_click,impression">
+            <mat-icon _ngcontent-ng-c972899123="" role="img" class="mat-icon notranslate google-symbols mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font">close</mat-icon>
+          </button>
+          <!---->
+        </div>
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+      </div>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+    </uploader-file-preview>
+    <!---->
+    <!---->
+    <!---->
+  </div>
+</script>
+{% endraw %}
+
 {% raw %}
 <!-- 사용자가 쓴 채팅 -->
 <script id="me-template" type="text/x-handlebars-template">

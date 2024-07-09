@@ -9,6 +9,7 @@ function onDragEnter_(e) {
 function onDragOver_(e) {
     e.preventDefault()
 }
+
 function onDragLeave_(e) {
     e.preventDefault();
     this.dragCount -= 1;

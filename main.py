@@ -41,7 +41,8 @@ async def uploadFile(file: UploadFile):
         return {"filename": "No"}
     
     print("format:", image.format)
-    thumbnail_blob_name = dest_blob_name + "_thumbnail.png"
+    thumbnail_blob_name = dest_blob_name + "_thumb.png"
+    thumbnail2_blob_name = dest_blob_name + "_thumb2.png"
     if image.format == "PNG":
         dest_blob_name += ".png"
     elif image.format == "JPEG":
@@ -71,6 +72,24 @@ async def uploadFile(file: UploadFile):
     blob = bucket.blob(thumbnail_blob_name)
     blob.upload_from_string(image_thumb_bytes)
 
+    width, height = image.size
+    print("width:", width, ", height:", height)
+    if width >= height:
+        size_thumb2 = 46, int((height * 46)/width)
+    else:
+        size_thumb2 = int((width * 46)/height), 46
+
+    print("size:", size_thumb2)
+    image_thumb2 = image.resize(size_thumb2, Image.Resampling.LANCZOS)
+    print(image_thumb2)
+
+    img_byte_arr = io.BytesIO()
+    image_thumb2.save(img_byte_arr, format='PNG')
+    image_thumb2_bytes = img_byte_arr.getvalue()
+
+    blob = bucket.blob(thumbnail2_blob_name)
+    blob.upload_from_string(image_thumb2_bytes)
+
     url = f"https://storage.googleapis.com/{bucket_name}/{dest_blob_name}"
     """
     url = blob.generate_signed_url(
@@ -79,4 +98,11 @@ async def uploadFile(file: UploadFile):
     )
     """
     
-    return {"filename": dest_blob_name}
+    response = {
+        "bucket": bucket_name,
+        "filename": dest_blob_name,
+        "thumbnail": thumbnail_blob_name,
+        "thumbnail2": thumbnail2_blob_name,
+    }
+    
+    return response
